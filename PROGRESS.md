@@ -3,7 +3,7 @@
 > Live status. Claude Code updates this at the end of every task: tick boxes, add a session log line, note issues. Keep it short and honest.
 
 **Current phase:** 0 — Setup
-**Overall:** Phases 1–7 code-complete (246/246 Core tests). Not yet compiled in Unity or run on Quest — next: Unity setup, first compile, device test.
+**Overall:** Phases 1–7 code-complete (246/246 Core tests). **Compiles and runs in Unity 6.3 Editor** (Editor preview works). Not yet run on Quest.
 
 ## Workstreams (session 3)
 | Agent | Area | Owns | Status |
@@ -15,7 +15,7 @@
 | E | Air Guitar | VirtualGuitar, AirChordMatcher, AirStrumDetector, PluckSynth, AirGuitar, AirGuitarVisual, RunDay1 | ✅ written; 32 Air tests pass; Runtime not yet compiled in Unity |
 | Lead | Shared UI kit | Runtime/UI (Theme, UIKit, PokeButton, Coach, UiSounds), HandsHub | ✅ done |
 | F | Editor preview | Runtime/EditorPreview (stand-in guitar auto-fitted, dim room, keyboard feedback: C/M/B/W/Q/Space/T/F/A/N/L/H) — editor-only | ✅ written; stub-compiled; device path unchanged |
-| User | Unity setup | Unity Hub installed (brew); user must run Unity CLI installer + sign in, then install Unity 6 LTS + Android | 🟨 |
+| User+Lead | Unity setup | Unity 6.3 LTS (6000.3.28f1) + Android, Personal licence, project opens, 0 compile errors, Play works | ✅ (Quest build not yet) |
 
 ## Blockers
 - [ ] Meta VR Start membership confirmed
@@ -24,7 +24,7 @@
 
 ## Phases
 Golden rule: a phase is ✅ only when it works on Quest 3 with controllers off. 🟨 = code written + Core tested.
-- [ ] 0 Setup ⬜ (user: Unity project, SDK, device)
+- [ ] 0 Setup 🟨 (Unity project + SDK done, Editor Play works; Quest build/device pending)
 - [ ] 1 Tuner 🟨
 - [ ] 2 Fit the fretboard 🟨
 - [ ] 3 Chord Coach 🟨
@@ -114,6 +114,9 @@ Golden rule: a phase is ✅ only when it works on Quest 3 with controllers off. 
 - Panel layout/spacing untested in a headset.
 - Editor preview stand-in guitar is right-handed only; B (buzz) maps to a muted-string result (Core has no buzz kind).
 - Browser mock-up of the look: https://claude.ai/artifact/HuiXZLbtpKXef8gLas6rtn (not the Unity build).
+- Editor preview layout: Welcome panel text too large / overlapping, panel faces yaw-only so it looks slanted when looking down; overlay lines faint on wood.
+- Unity's own search indexer logs one ArgumentOutOfRange on startup (UnityEditor.Search), not our code.
+- Scene has Main Camera only; OVRCameraRig + passthrough still to add for the Quest build.
 - Backing tracks not created yet (SongPlayer falls back to metronome).
 
 ## Session log
@@ -122,4 +125,5 @@ Golden rule: a phase is ✅ only when it works on Quest 3 with controllers off. 
 | 1 | Skeleton created | Phase 0 |
 | 2 | Read all docs; core tests run (20/20 pass, test runner fixed for .NET 9); action plan written; Many Hands idea dropped, GhostFret is the entry | Phase 0 Unity setup (user) + parallel Runtime work (agents) |
 | 3 | Shared UI kit + asmdef refs (TMP, Oculus.VR); 5 parallel agents wrote all Runtime modules + Core logic; 246/246 tests; cross-module API check clean; hard-rule audit clean; TMP wrap API updated | User: Unity setup + first compile; send console errors |
+| 5 | Unity 6.3 + Android installed, licence, project settings (URP asset, Meta core 209, Pipeline, modules, input Both), TMP essentials, GhostFret scene; Play works with stand-in guitar | Fix panel layout; add OVRCameraRig + passthrough; first Quest build |
 | 4 | Browser preview artifact; Editor-only preview helper (auto-fit stand-in guitar + keyboard feedback); Unity Hub installed | User: Unity CLI install + sign-in, open project, Play |
