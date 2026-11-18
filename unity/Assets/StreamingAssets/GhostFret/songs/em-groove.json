@@ -1,0 +1,7 @@
+{
+  "id": "em-groove", "title": "Em Groove", "source": "Original exercise by the GhostFret team",
+  "difficulty": 1, "chordsRequired": ["Em"], "timeSignature": [4, 4], "originalBpm": 70,
+  "strumPattern": ["D", "-", "D", "-", "D", "-", "D", "-"], "backingTrack": "",
+  "sections": [ { "name": "Groove", "bars": [
+    { "chord": "Em", "beats": 4 }, { "chord": "Em", "beats": 4 }, { "chord": "Em", "beats": 4 }, { "chord": "Em", "beats": 4 } ] } ]
+}

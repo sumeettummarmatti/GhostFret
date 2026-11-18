@@ -1,0 +1,10 @@
+{
+  "id": "amazing-grace", "title": "Amazing Grace", "source": "Traditional (public domain), simplified arrangement",
+  "difficulty": 2, "chordsRequired": ["G", "C", "D"], "timeSignature": [3, 4], "originalBpm": 80,
+  "strumPattern": ["D", "-", "D", "U", "D", "U"], "backingTrack": "",
+  "sections": [ { "name": "Verse", "bars": [
+    { "chord": "G", "beats": 3 }, { "chord": "G", "beats": 3 }, { "chord": "C", "beats": 3 }, { "chord": "G", "beats": 3 },
+    { "chord": "G", "beats": 3 }, { "chord": "G", "beats": 3 }, { "chord": "D", "beats": 3 }, { "chord": "D", "beats": 3 },
+    { "chord": "G", "beats": 3 }, { "chord": "G", "beats": 3 }, { "chord": "C", "beats": 3 }, { "chord": "G", "beats": 3 },
+    { "chord": "G", "beats": 3 }, { "chord": "D", "beats": 3 }, { "chord": "G", "beats": 3 }, { "chord": "G", "beats": 3 } ] } ]
+}

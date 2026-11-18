@@ -1,0 +1,8 @@
+{
+  "id": "drunken-sailor", "title": "Drunken Sailor", "source": "Traditional (public domain), simplified arrangement in Em",
+  "difficulty": 1, "chordsRequired": ["Em", "D"], "timeSignature": [4, 4], "originalBpm": 100,
+  "strumPattern": ["D", "-", "D", "-", "D", "-", "D", "-"], "backingTrack": "",
+  "sections": [ { "name": "Verse", "bars": [
+    { "chord": "Em", "beats": 4 }, { "chord": "Em", "beats": 4 }, { "chord": "D", "beats": 4 }, { "chord": "D", "beats": 4 },
+    { "chord": "Em", "beats": 4 }, { "chord": "Em", "beats": 4 }, { "chord": "D", "beats": 2 }, { "chord": "Em", "beats": 2 } ] } ]
+}

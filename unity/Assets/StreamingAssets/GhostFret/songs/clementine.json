@@ -1,0 +1,10 @@
+{
+  "id": "clementine", "title": "Clementine", "source": "Traditional (public domain), simplified arrangement",
+  "difficulty": 2, "chordsRequired": ["G", "D"], "timeSignature": [3, 4], "originalBpm": 90,
+  "strumPattern": ["D", "-", "D", "U", "D", "U"], "backingTrack": "",
+  "sections": [ { "name": "Chorus", "bars": [
+    { "chord": "G", "beats": 3 }, { "chord": "G", "beats": 3 }, { "chord": "G", "beats": 3 }, { "chord": "D", "beats": 3 },
+    { "chord": "D", "beats": 3 }, { "chord": "D", "beats": 3 }, { "chord": "D", "beats": 3 }, { "chord": "G", "beats": 3 },
+    { "chord": "G", "beats": 3 }, { "chord": "G", "beats": 3 }, { "chord": "G", "beats": 3 }, { "chord": "D", "beats": 3 },
+    { "chord": "D", "beats": 3 }, { "chord": "G", "beats": 3 }, { "chord": "D", "beats": 3 }, { "chord": "G", "beats": 3 } ] } ]
+}

@@ -1,0 +1,12 @@
+{
+  "days": [
+    { "day": 1, "title": "Your first chord", "newChords": ["Em"], "strumPattern": ["D","-","D","-","D","-","D","-"], "changeDrills": [], "songIds": ["em-groove"], "goal": "Play a clean Em and strum on the beat." },
+    { "day": 2, "title": "Two chords, one song", "newChords": ["D"], "strumPattern": ["D","-","D","-","D","-","D","-"], "changeDrills": ["Em-D"], "songIds": ["drunken-sailor"], "goal": "Switch between Em and D in time." },
+    { "day": 3, "title": "Hello G", "newChords": ["G"], "strumPattern": ["D","-","D","U","D","U"], "changeDrills": ["G-D"], "songIds": ["clementine"], "goal": "Add an up-strum." },
+    { "day": 4, "title": "Hello C", "newChords": ["C"], "strumPattern": ["D","-","D","U","D","U"], "changeDrills": ["G-C"], "songIds": ["amazing-grace"], "goal": "Three chords in a song." },
+    { "day": 5, "title": "The classic strum", "newChords": ["Am"], "strumPattern": ["D","-","D","U","-","U","D","U"], "changeDrills": ["Am-C"], "songIds": ["oh-susanna"], "goal": "Play D-DU-UDU without stopping." },
+    { "day": 6, "title": "A and E", "newChords": ["A", "E"], "strumPattern": ["D","-","D","U","-","U","D","U"], "changeDrills": ["A-E", "A-D"], "songIds": ["when-the-saints"], "goal": "A new key, same strum." },
+    { "day": 7, "title": "Review and speed up", "newChords": [], "strumPattern": ["D","-","D","U","-","U","D","U"], "changeDrills": ["Em-G", "C-D"], "songIds": [], "goal": "Beat your best change-drill score." },
+    { "day": 8, "title": "Minor moods", "newChords": ["Dm", "F"], "strumPattern": ["D","-","D","U","D","U"], "changeDrills": ["C-F", "Am-F"], "songIds": ["house-of-the-rising-sun"], "goal": "Your first five-chord song." }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "house-of-the-rising-sun", "title": "House of the Rising Sun", "source": "Traditional (public domain), simplified arrangement with mini F",
+  "difficulty": 4, "chordsRequired": ["Am", "C", "D", "F", "E"], "timeSignature": [3, 4], "originalBpm": 75,
+  "strumPattern": ["D", "-", "D", "U", "D", "U"], "backingTrack": "",
+  "sections": [ { "name": "Verse", "bars": [
+    { "chord": "Am", "beats": 3 }, { "chord": "C", "beats": 3 }, { "chord": "D", "beats": 3 }, { "chord": "F", "beats": 3 },
+    { "chord": "Am", "beats": 3 }, { "chord": "C", "beats": 3 }, { "chord": "E", "beats": 3 }, { "chord": "E", "beats": 3 },
+    { "chord": "Am", "beats": 3 }, { "chord": "C", "beats": 3 }, { "chord": "D", "beats": 3 }, { "chord": "F", "beats": 3 },
+    { "chord": "Am", "beats": 3 }, { "chord": "E", "beats": 3 }, { "chord": "Am", "beats": 3 }, { "chord": "E", "beats": 3 } ] } ]
+}

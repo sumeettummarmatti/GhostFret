@@ -1,0 +1,10 @@
+{
+  "id": "when-the-saints", "title": "When the Saints Go Marching In", "source": "Traditional (public domain), simplified arrangement in A",
+  "difficulty": 3, "chordsRequired": ["A", "D", "E"], "timeSignature": [4, 4], "originalBpm": 110,
+  "strumPattern": ["D", "-", "D", "U", "-", "U", "D", "U"], "backingTrack": "",
+  "sections": [ { "name": "Verse", "bars": [
+    { "chord": "A", "beats": 4 }, { "chord": "A", "beats": 4 }, { "chord": "A", "beats": 4 }, { "chord": "A", "beats": 4 },
+    { "chord": "A", "beats": 4 }, { "chord": "A", "beats": 4 }, { "chord": "E", "beats": 4 }, { "chord": "E", "beats": 4 },
+    { "chord": "A", "beats": 4 }, { "chord": "A", "beats": 4 }, { "chord": "D", "beats": 4 }, { "chord": "D", "beats": 4 },
+    { "chord": "A", "beats": 4 }, { "chord": "E", "beats": 4 }, { "chord": "A", "beats": 4 }, { "chord": "A", "beats": 4 } ] } ]
+}

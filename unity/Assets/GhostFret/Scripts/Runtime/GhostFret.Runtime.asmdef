@@ -1,0 +1,10 @@
+{
+    "name": "GhostFret.Runtime",
+    "rootNamespace": "GhostFret.Runtime",
+    "references": ["GhostFret.Core"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "autoReferenced": true,
+    "noEngineReferences": false
+}

@@ -1,0 +1,12 @@
+{
+  "id": "oh-susanna", "title": "Oh! Susanna", "source": "Stephen Foster, 1848 (public domain), simplified arrangement",
+  "difficulty": 2, "chordsRequired": ["G", "C", "D"], "timeSignature": [4, 4], "originalBpm": 100,
+  "strumPattern": ["D", "-", "D", "U", "-", "U", "D", "U"], "backingTrack": "",
+  "sections": [
+    { "name": "Verse", "bars": [
+      { "chord": "G", "beats": 4 }, { "chord": "G", "beats": 4 }, { "chord": "D", "beats": 4 }, { "chord": "D", "beats": 4 },
+      { "chord": "G", "beats": 4 }, { "chord": "G", "beats": 4 }, { "chord": "D", "beats": 4 }, { "chord": "G", "beats": 4 } ] },
+    { "name": "Chorus", "bars": [
+      { "chord": "C", "beats": 4 }, { "chord": "C", "beats": 4 }, { "chord": "G", "beats": 4 }, { "chord": "D", "beats": 4 },
+      { "chord": "G", "beats": 4 }, { "chord": "G", "beats": 4 }, { "chord": "D", "beats": 4 }, { "chord": "G", "beats": 4 } ] } ]
+}
