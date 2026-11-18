@@ -5,6 +5,8 @@
     <LangVersion>9.0</LangVersion>
     <Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
+    <!-- Lets tests run on machines that only have a newer .NET runtime (e.g. 9). -->
+    <RollForward>Major</RollForward>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="../unity/Assets/GhostFret/Scripts/Core/**/*.cs" LinkBase="Core" />

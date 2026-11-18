@@ -6,6 +6,7 @@
 **Overall:** Skeleton ready (Core logic + docs + content + Runtime stubs)
 
 ## Blockers
+- [ ] **Confirm the real deadline.** Docs say Nov 18, 2026, 12:00 PM PST, which is today (2026-11-18).
 - [ ] Meta VR Start membership confirmed
 - [ ] Unity 6 LTS + Android Build Support installed
 - [ ] Quest 3 in Developer Mode
@@ -33,7 +34,8 @@
 | Core: SongChart/Timeline/Validator, Curriculum, PracticeProgress | Written |
 | Content: curriculum.json + 6 song charts | Written (public domain / original) |
 | Runtime (Unity) | Stubs with TODOs |
-| core-tests | Harness + starter tests |
+| core-tests | Harness + 20 tests, all passing (`RollForward=Major` so .NET 9 can run them) |
+| Unity project | Only `Assets/`; no `ProjectSettings/` or `Packages/` yet (Phase 0, by hand) |
 
 ## Decisions
 | Decision | Why |
@@ -65,3 +67,4 @@
 | Session | What changed | Next |
 |---|---|---|
 | 1 | Skeleton created | Phase 0 |
+| 2 | Read all docs; core tests run (20/20 pass, test runner fixed for .NET 9); action plan written; Many Hands idea dropped, GhostFret is the entry | Confirm deadline; Phase 0 Unity setup (user) + parallel Runtime work (agents) |

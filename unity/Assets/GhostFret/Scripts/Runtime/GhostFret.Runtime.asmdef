@@ -1,7 +1,7 @@
 {
     "name": "GhostFret.Runtime",
     "rootNamespace": "GhostFret.Runtime",
-    "references": ["GhostFret.Core"],
+    "references": ["GhostFret.Core", "Unity.TextMeshPro", "Oculus.VR"],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
