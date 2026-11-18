@@ -27,6 +27,24 @@ namespace GhostFret.Core.Tests
         }
 
         [Fact]
+        public void Every_song_plays_through_with_its_pattern()
+        {
+            foreach (var song in LoadSongs())
+            {
+                var timeline = SongTimeline.Build(song);
+                Assert.True(timeline.TotalBeats > 0, song.id);
+                Assert.Equal(song.sections.Length, timeline.Sections.Count);
+                var pattern = GhostFret.Core.Strum.StrumPattern.Parse(song.strumPattern, song.GetBeatsPerBar());
+                Assert.True(pattern.HasAnyStrum, song.id + " has no strums in its pattern");
+                // A full run at the slowest tempo still finishes and scores.
+                var clock = new SongClock(timeline, song.GetBeatsPerBar());
+                for (double beat = 0; beat <= timeline.TotalBeats; beat += 0.5) clock.Advance(beat);
+                Assert.True(clock.IsFinished, song.id);
+                Assert.InRange(timeline.DurationSeconds(song.originalBpm * 0.5), 10, 300);
+            }
+        }
+
+        [Fact]
         public void Curriculum_songs_exist_and_are_unlocked_on_their_day()
         {
             var songs = LoadSongs().ToDictionary(s => s.id);

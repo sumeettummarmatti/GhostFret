@@ -14,7 +14,7 @@ namespace GhostFret.Core.Audio
 
     /// <summary>
     /// YIN pitch detector for one note at a time (used by the tuner).
-    /// de Cheveigné & Kawahara (2002).
+    /// de Cheveigné & Kawahara (2002). Not thread-safe (reuses scratch buffers).
     /// </summary>
     public sealed class YinPitchDetector
     {
@@ -22,6 +22,10 @@ namespace GhostFret.Core.Audio
         public double MaxFrequency = 1000.0;
         public double Threshold = 0.15;        // lower = stricter
         public double MinRms = 0.005;          // ignore near-silence
+
+        // Reused between calls: the tuner calls Detect ~10 times a second.
+        private double[] _diff = new double[0];
+        private double[] _cmnd = new double[0];
 
         public PitchResult Detect(float[] samples, int sampleRate)
         {
@@ -31,9 +35,14 @@ namespace GhostFret.Core.Audio
             int maxTau = Math.Min(samples.Length / 2, (int)(sampleRate / MinFrequency));
             int minTau = Math.Max(2, (int)(sampleRate / MaxFrequency));
             int windowSize = samples.Length - maxTau;
+            if (_diff.Length < maxTau + 1)
+            {
+                _diff = new double[maxTau + 1];
+                _cmnd = new double[maxTau + 1];
+            }
+            double[] diff = _diff, cmnd = _cmnd;
 
             // 1. Difference function
-            var diff = new double[maxTau + 1];
             for (int tau = 1; tau <= maxTau; tau++)
             {
                 double sum = 0;
@@ -46,7 +55,6 @@ namespace GhostFret.Core.Audio
             }
 
             // 2. Cumulative mean normalised difference
-            var cmnd = new double[maxTau + 1];
             cmnd[0] = 1;
             double running = 0;
             for (int tau = 1; tau <= maxTau; tau++)

@@ -24,6 +24,13 @@ namespace GhostFret.Core.Lesson
             Factor = startFactor;
         }
 
+        /// <summary>Restores a saved factor (e.g. from on-device progress), clamped to the allowed range.</summary>
+        public void Restore(double factor)
+        {
+            Factor = Math.Round(Math.Max(MinFactor, Math.Min(MaxFactor, factor)), 4);
+            _goodRuns = 0;
+        }
+
         public double CurrentBpm(double originalBpm)
         {
             return originalBpm * Factor;

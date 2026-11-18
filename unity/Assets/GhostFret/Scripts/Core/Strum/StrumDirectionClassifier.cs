@@ -17,11 +17,16 @@ namespace GhostFret.Core.Strum
         public double MinSpeed = 0.25;           // m/s; slower movement isn't a strum
         public double LookbackSeconds = 0.06;    // velocity measured over the last 60 ms
         public double KeepSeconds = 1.0;
+        public double MaxSampleAgeSeconds = 0.15; // tracking lost longer than this → don't guess
 
         private readonly List<KeyValuePair<double, double>> _samples = new List<KeyValuePair<double, double>>();
 
+        public void Clear() { _samples.Clear(); }
+
         public void AddSample(double timeSeconds, double positionAlongAxis)
         {
+            // Ignore out-of-order or duplicate timestamps; velocity needs time to move forward.
+            if (_samples.Count > 0 && timeSeconds <= _samples[_samples.Count - 1].Key) return;
             _samples.Add(new KeyValuePair<double, double>(timeSeconds, positionAlongAxis));
             while (_samples.Count > 0 && timeSeconds - _samples[0].Key > KeepSeconds) _samples.RemoveAt(0);
         }
@@ -44,6 +49,8 @@ namespace GhostFret.Core.Strum
                 if (_samples[i].Key <= timeSeconds + 1e-9) { end = i; break; }
             }
             if (end < 1) return false;
+            // Hand lost (or not yet sampled) around the strum: stay quiet rather than guess (rule 5).
+            if (timeSeconds - _samples[end].Key > MaxSampleAgeSeconds) return false;
 
             int start = end;
             while (start > 0 && _samples[end].Key - _samples[start - 1].Key <= LookbackSeconds + 1e-9) start--;

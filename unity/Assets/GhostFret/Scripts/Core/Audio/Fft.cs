@@ -81,6 +81,30 @@ namespace GhostFret.Core.Audio
             return mags;
         }
 
+        /// <summary>
+        /// Allocation-free version for per-frame use: reads count samples from samples[offset…]
+        /// (zero-padded up to fftSize), using caller-owned scratch arrays re/im (fftSize) and mags (fftSize/2).
+        /// </summary>
+        public static void MagnitudeSpectrum(float[] samples, int offset, int count, double[] window,
+                                             double[] re, double[] im, double[] mags)
+        {
+            int fftSize = re.Length;
+            count = Math.Min(count, fftSize);
+            for (int i = 0; i < count; i++) re[i] = samples[offset + i] * window[i];
+            for (int i = count; i < fftSize; i++) re[i] = 0;
+            Array.Clear(im, 0, fftSize);
+            Transform(re, im);
+            for (int k = 0; k < mags.Length; k++) mags[k] = Math.Sqrt(re[k] * re[k] + im[k] * im[k]);
+        }
+
+        public static double Rms(float[] samples, int offset, int count)
+        {
+            if (count <= 0) return 0;
+            double sum = 0;
+            for (int i = offset; i < offset + count; i++) sum += samples[i] * samples[i];
+            return Math.Sqrt(sum / count);
+        }
+
         public static double BinFrequency(int bin, int sampleRate, int fftSize)
         {
             return (double)bin * sampleRate / fftSize;

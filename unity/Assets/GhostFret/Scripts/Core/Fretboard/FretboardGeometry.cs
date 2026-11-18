@@ -33,6 +33,8 @@ namespace GhostFret.Core.Fretboard
         public float Taper { get; private set; }
         public bool WasSnapped { get; private set; }
 
+        private float _snapTolerance = DefaultSnapTolerance;
+
         private FretboardGeometry() { }
 
         public static FretboardGeometry FromCalibration(
@@ -44,6 +46,7 @@ namespace GhostFret.Core.Fretboard
             g.NutHighE = nutHighE;
             g.TwelfthLowE = twelfthLowE;
             g.Taper = taper;
+            g._snapTolerance = snapTolerance;
 
             g.NeckAxis = Vector3.Normalize(twelfthLowE - nutLowE);
 
@@ -117,6 +120,11 @@ namespace GhostFret.Core.Fretboard
         /// <summary>Sanity check so we can ask the player to redo calibration.</summary>
         public bool IsPlausible(out string reason)
         {
+            if (!IsFinite(NeckAxis) || !IsFinite(AcrossAxis) || !IsFinite(SurfaceNormal))
+            {
+                reason = "Two of the touches landed in the same spot. Let's try that again.";
+                return false;
+            }
             if (MeasuredScaleLength < 0.50f || MeasuredScaleLength > 0.72f)
             {
                 reason = "The 12th fret seems too near or too far from the nut. Let's try that again.";
@@ -136,5 +144,94 @@ namespace GhostFret.Core.Fretboard
             reason = "";
             return true;
         }
+
+        // ---------- Helpers used by the overlay, ghost hand, calibration and re-fit ----------
+
+        /// <summary>
+        /// A point on the board between strings: stringPosition 0 = low E … 5 = high E (2.5 = middle).
+        /// Used for fret markers and labels that sit between strings.
+        /// </summary>
+        public Vector3 BoardPoint(float stringPosition, float distanceFromNut)
+        {
+            return NutLowE
+                   + NeckAxis * distanceFromNut
+                   + AcrossAxis * (stringPosition / 5f * WidthAt(distanceFromNut));
+        }
+
+        /// <summary>Middle of the board around the 6th fret: a good "where is the neck" point.</summary>
+        public Vector3 Center
+        {
+            get { return BoardPoint(2.5f, FretDistance(ScaleLength, 6)); }
+        }
+
+        /// <summary>
+        /// SurfaceNormal flipped, if needed, so it points toward the viewer (the player's head).
+        /// The sign of SurfaceNormal depends on handedness, so anything drawn "above the strings"
+        /// should use this instead.
+        /// </summary>
+        public Vector3 NormalToward(Vector3 viewer)
+        {
+            return Vector3.Dot(SurfaceNormal, viewer - Center) >= 0f ? SurfaceNormal : -SurfaceNormal;
+        }
+
+        /// <summary>The same fretboard moved by an offset (keeps angle and size). Used by quick re-fit.</summary>
+        public FretboardGeometry MovedBy(Vector3 offset)
+        {
+            return FromCalibration(NutLowE + offset, NutHighE + offset, TwelfthLowE + offset, _snapTolerance, Taper);
+        }
+
+        /// <summary>Fret number whose space contains a distance from the nut (0 = behind the nut).</summary>
+        public static int FretAt(float scaleLength, float distanceFromNut)
+        {
+            if (distanceFromNut <= 0f) return 0;
+            double ratio = 1.0 - distanceFromNut / scaleLength;
+            if (ratio <= 0.0) return 99;
+            return (int)Math.Ceiling(-12.0 * Math.Log(ratio, 2) - 1e-6);
+        }
+
+        /// <summary>Where a 3D point sits relative to the board (used for hints and re-fit).</summary>
+        public FretboardPoint Locate(Vector3 point)
+        {
+            Vector3 d = point - NutLowE;
+            var p = new FretboardPoint();
+            p.Along = Vector3.Dot(d, NeckAxis);
+            p.Height = Vector3.Dot(d, SurfaceNormal);
+            float acrossMeters = Vector3.Dot(d, AcrossAxis);
+            float width = WidthAt(Math.Max(0f, p.Along));
+            p.StringPosition = width > 1e-6f ? acrossMeters / width * 5f : 0f;
+            p.NearestString = Math.Max(0, Math.Min(5, (int)Math.Round(p.StringPosition)));
+            p.Fret = FretAt(ScaleLength, p.Along);
+            return p;
+        }
+
+        /// <summary>
+        /// True if a fingertip is resting at the nut by the low E string (quick re-fit touch).
+        /// maxPastNut keeps it clear of a finger pressing fret 1 (its spot is ~2.5 cm from the nut).
+        /// </summary>
+        public bool IsInRefitZone(Vector3 point, float radius, float maxPastNut)
+        {
+            if (Vector3.Distance(point, NutLowE) > radius) return false;
+            return Vector3.Dot(point - NutLowE, NeckAxis) <= maxPastNut;
+        }
+
+        private static bool IsFinite(Vector3 v)
+        {
+            return !(float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z) ||
+                     float.IsInfinity(v.X) || float.IsInfinity(v.Y) || float.IsInfinity(v.Z));
+        }
+    }
+
+    /// <summary>A point expressed in fretboard terms.</summary>
+    public struct FretboardPoint
+    {
+        /// <summary>Metres from the nut along the neck (negative = toward the headstock).</summary>
+        public float Along;
+        /// <summary>Metres above the board (along SurfaceNormal; sign depends on handedness).</summary>
+        public float Height;
+        /// <summary>0 = low E … 5 = high E, fractional between strings.</summary>
+        public float StringPosition;
+        public int NearestString;
+        /// <summary>Fret space the point is over (1 = between nut and fret 1). 0 = behind the nut.</summary>
+        public int Fret;
     }
 }

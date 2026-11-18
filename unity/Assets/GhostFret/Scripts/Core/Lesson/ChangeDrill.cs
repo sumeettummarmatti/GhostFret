@@ -39,6 +39,16 @@ namespace GhostFret.Core.Lesson
             return left > 0 ? left : 0;
         }
 
+        /// <summary>True once the 60 s are used up (stops the drill).</summary>
+        public bool IsTimeUp(double nowSeconds)
+        {
+            if (IsRunning && TimeLeft(nowSeconds) <= 0) IsRunning = false;
+            return !IsRunning;
+        }
+
+        /// <summary>"Em-D", the key used for the saved best score.</summary>
+        public string PairKey { get { return ChordA + "-" + ChordB; } }
+
         /// <summary>Call with each clean chord the coach hears. Returns true if it scored a point.</summary>
         public bool OnCleanChord(string chordName, double nowSeconds)
         {

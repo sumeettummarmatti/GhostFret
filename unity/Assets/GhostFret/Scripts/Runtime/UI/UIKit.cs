@@ -49,7 +49,7 @@ namespace GhostFret.Runtime.UI
             tmp.fontSize = heightMeters * 14f;
             tmp.color = Theme.Text;
             tmp.alignment = align;
-            tmp.enableWordWrapping = true;
+            tmp.textWrappingMode = TextWrappingModes.Normal;
             tmp.rectTransform.sizeDelta = new Vector2(widthMeters, heightMeters * 6f);
             return tmp;
         }
