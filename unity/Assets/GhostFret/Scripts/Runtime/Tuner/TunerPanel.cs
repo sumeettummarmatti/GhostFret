@@ -123,6 +123,19 @@ namespace GhostFret.Runtime.Tuner
             if (AllInTune != null) AllInTune();
         }
 
+#if UNITY_EDITOR
+        /// <summary>Editor preview only (Runtime/EditorPreview): finish as if all six strings were heard in tune.</summary>
+        public void CompleteForPreview()
+        {
+            if (!_active) return;
+            WasSkipped = false;
+            _reportedAll = true;
+            Coach.Say("All six strings are in tune. Lovely!", CoachTone.Good);
+            End();
+            if (AllInTune != null) AllInTune();
+        }
+#endif
+
         /// <summary>Alternate tunings (Drop D, half step down). Resets progress.</summary>
         public void SetTuning(GuitarTuning tuning)
         {

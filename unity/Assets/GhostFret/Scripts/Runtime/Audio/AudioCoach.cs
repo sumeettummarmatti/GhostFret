@@ -101,6 +101,9 @@ namespace GhostFret.Runtime.Audio
         private void Update()
         {
             if (!_listening) return;
+#if UNITY_EDITOR
+            if (PreviewIgnoreMic) { _readFrom = -1; return; }   // preview: keyboard strums only, no laptop-mic noise
+#endif
             MicrophoneInput mic = Mic;
             if (mic == null || !mic.IsRunning) { _readFrom = -1; return; }
 
@@ -139,6 +142,24 @@ namespace GhostFret.Runtime.Audio
             if (speakFeedback) Speak(feedback);
             if (StrumHeard != null) StrumHeard(feedback);
         }
+
+#if UNITY_EDITOR
+        /// <summary>Editor preview only: ignore the real microphone (keyboard strums only).</summary>
+        public bool PreviewIgnoreMic { get; set; }
+
+        /// <summary>
+        /// Editor preview only (Runtime/EditorPreview): pretend the mic heard a strum at dspTime with this
+        /// result. Goes through the same latency correction and events as a real strum (StrumTimed, then
+        /// StrumHeard). Ignored while not listening, exactly like real audio. Returns false if ignored.
+        /// </summary>
+        public bool InjectForPreview(ChordFeedback fb, double dspTime)
+        {
+            if (!_listening) return false;
+            OnOnset(dspTime);
+            if (fb != null) OnChord(fb, dspTime);
+            return true;
+        }
+#endif
 
         private static void Speak(ChordFeedback fb)
         {

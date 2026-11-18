@@ -86,7 +86,22 @@ namespace GhostFret.Runtime.App
             BuildRunnersAndPanels();
             WireEvents();
             ApplySettings();
+#if UNITY_EDITOR
+            // Editor-only preview (Runtime/EditorPreview): with no headset hands (mouse hands picked, so no
+            // OVRHand in the scene) add a stand-in guitar, a dim room and keyboard shortcuts for every
+            // feedback state. Never compiled into a device build.
+            if (Application.isEditor && _s.Hands is EditorMouseHandInput)
+                gameObject.AddComponent<GhostFret.Runtime.Preview.EditorPreview>().Init(this, _s);
+#endif
         }
+
+#if UNITY_EDITOR
+        /// <summary>Editor preview only: the same as pressing a mode button on the Welcome card.</summary>
+        public void ChooseModeForPreview(SessionMode mode)
+        {
+            OnModeChosen(mode);
+        }
+#endif
 
         private IEnumerator Start()
         {

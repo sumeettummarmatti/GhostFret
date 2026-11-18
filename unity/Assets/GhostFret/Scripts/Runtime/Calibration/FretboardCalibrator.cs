@@ -245,6 +245,21 @@ namespace GhostFret.Runtime.Calibration
             if (Fitted != null) Fitted(Current);
         }
 
+#if UNITY_EDITOR
+        /// <summary>
+        /// Editor preview only (Runtime/EditorPreview): accept a fretboard as if the three spots were
+        /// touched and "Looks right" pressed. Raises Fitted like the real flow.
+        /// </summary>
+        public void AcceptForPreview(FretboardGeometry g)
+        {
+            if (g == null) return;
+            EnsureBuilt();
+            _pending = g;
+            State = Phase.Confirming;
+            OnLooksRight();
+        }
+#endif
+
         private void OnTryAgain()
         {
             if (State != Phase.Confirming) return;

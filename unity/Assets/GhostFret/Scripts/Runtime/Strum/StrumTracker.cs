@@ -25,6 +25,11 @@ namespace GhostFret.Runtime.Strum
         /// <summary>The live classifier (tunable: MinSpeed, LookbackSeconds).</summary>
         public StrumDirectionClassifier Classifier { get { return _classifier; } }
 
+#if UNITY_EDITOR
+        /// <summary>Editor preview only: when not None, DirectionAt answers this instead of reading the wrist.</summary>
+        public StrumDirection PreviewDirection { get; set; }
+#endif
+
         private readonly StrumDirectionClassifier _classifier = new StrumDirectionClassifier();
         private bool _initialised;
 
@@ -54,6 +59,9 @@ namespace GhostFret.Runtime.Strum
         /// <summary>Direction around a strum time (AudioSettings.dspTime seconds). None when unsure.</summary>
         public StrumDirection DirectionAt(double dspTime)
         {
+#if UNITY_EDITOR
+            if (PreviewDirection != StrumDirection.None) return PreviewDirection;
+#endif
             return _classifier.DirectionAt(dspTime);
         }
 

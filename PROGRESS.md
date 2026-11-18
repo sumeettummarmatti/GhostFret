@@ -14,7 +14,8 @@
 | D | Songs + strum | ContentLoader, Metronome, StrumTracker, StrumLane, SongPlayer, LatencyCalibrator, SongRun scoring | ✅ written; 245/245 tests at hand-back; Runtime not yet compiled in Unity |
 | E | Air Guitar | VirtualGuitar, AirChordMatcher, AirStrumDetector, PluckSynth, AirGuitar, AirGuitarVisual, RunDay1 | ✅ written; 32 Air tests pass; Runtime not yet compiled in Unity |
 | Lead | Shared UI kit | Runtime/UI (Theme, UIKit, PokeButton, Coach, UiSounds), HandsHub | ✅ done |
-| User | Unity setup | Phase 0 in docs/SETUP_UNITY.md | ⬜ |
+| F | Editor preview | Runtime/EditorPreview (stand-in guitar auto-fitted, dim room, keyboard feedback: C/M/B/W/Q/Space/T/F/A/N/L/H) — editor-only | ✅ written; stub-compiled; device path unchanged |
+| User | Unity setup | Unity Hub installed (brew); user must run Unity CLI installer + sign in, then install Unity 6 LTS + Android | 🟨 |
 
 ## Blockers
 - [ ] Meta VR Start membership confirmed
@@ -111,6 +112,8 @@ Golden rule: a phase is ✅ only when it works on Quest 3 with controllers off. 
 - Mic latency calibration not wired into the flow (AudioCoach.inputLatencySeconds = 0).
 - Strum Coach resumes from its count-in after pause (song + drill resume exactly).
 - Panel layout/spacing untested in a headset.
+- Editor preview stand-in guitar is right-handed only; B (buzz) maps to a muted-string result (Core has no buzz kind).
+- Browser mock-up of the look: https://claude.ai/artifact/HuiXZLbtpKXef8gLas6rtn (not the Unity build).
 - Backing tracks not created yet (SongPlayer falls back to metronome).
 
 ## Session log
@@ -119,3 +122,4 @@ Golden rule: a phase is ✅ only when it works on Quest 3 with controllers off. 
 | 1 | Skeleton created | Phase 0 |
 | 2 | Read all docs; core tests run (20/20 pass, test runner fixed for .NET 9); action plan written; Many Hands idea dropped, GhostFret is the entry | Phase 0 Unity setup (user) + parallel Runtime work (agents) |
 | 3 | Shared UI kit + asmdef refs (TMP, Oculus.VR); 5 parallel agents wrote all Runtime modules + Core logic; 246/246 tests; cross-module API check clean; hard-rule audit clean; TMP wrap API updated | User: Unity setup + first compile; send console errors |
+| 4 | Browser preview artifact; Editor-only preview helper (auto-fit stand-in guitar + keyboard feedback); Unity Hub installed | User: Unity CLI install + sign-in, open project, Play |
