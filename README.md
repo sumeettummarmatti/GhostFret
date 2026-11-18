@@ -5,7 +5,7 @@
 | | |
 |---|---|
 | **Device** | Meta Quest 3 / 3S (passthrough, hand tracking, microphone) |
-| **Engine** | Unity 6 LTS + Meta XR All-in-One SDK (v81+) |
+| **Engine** | Unity 6000.3.28f1 (6.3 LTS) + Meta XR Core SDK 209 + URP |
 | **Competition** | Meta VR Start Developer Competition 2026 · **New Experience** division |
 | **Track** | Productivity (recommended; see DESIGN.md §13.1) |
 | **Deadline** | Nov 18, 2026, 12:00 PM PST |
@@ -22,6 +22,7 @@
 | `CLAUDE.md` | Rules and workflow for Claude Code |
 | `docs/SETUP_UNITY.md` | Unity + Meta SDK + Quest 3 setup, step by step |
 | `docs/UX_GUIDE.md` | Look, sound, motion and tone so it feels great |
+| `docs/TESTER_SETUP.md` | Baby-step setup + test guide: Quest 3, computer, Unity, Editor test, Quest build |
 
 ## Repo layout
 

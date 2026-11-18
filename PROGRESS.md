@@ -125,5 +125,6 @@ Golden rule: a phase is ✅ only when it works on Quest 3 with controllers off. 
 | 1 | Skeleton created | Phase 0 |
 | 2 | Read all docs; core tests run (20/20 pass, test runner fixed for .NET 9); action plan written; Many Hands idea dropped, GhostFret is the entry | Phase 0 Unity setup (user) + parallel Runtime work (agents) |
 | 3 | Shared UI kit + asmdef refs (TMP, Oculus.VR); 5 parallel agents wrote all Runtime modules + Core logic; 246/246 tests; cross-module API check clean; hard-rule audit clean; TMP wrap API updated | User: Unity setup + first compile; send console errors |
+| 6 | Pushed to GitHub (removed Meta DevAgentSettings token from history + .gitignore); docs/TESTER_SETUP.md for a second tester | Tester: Parts B–G of TESTER_SETUP.md |
 | 5 | Unity 6.3 + Android installed, licence, project settings (URP asset, Meta core 209, Pipeline, modules, input Both), TMP essentials, GhostFret scene; Play works with stand-in guitar | Fix panel layout; add OVRCameraRig + passthrough; first Quest build |
 | 4 | Browser preview artifact; Editor-only preview helper (auto-fit stand-in guitar + keyboard feedback); Unity Hub installed | User: Unity CLI install + sign-in, open project, Play |
