@@ -24,10 +24,16 @@ This repo ships only `unity/Assets`. Unity creates the rest when it opens the fo
 - **Microphone:** Android permission `RECORD_AUDIO`; `MicrophoneInput` requests it at runtime with a clear reason.
 - **(v2) Passthrough Camera API:** headset camera permission; see Meta's Passthrough Camera API docs.
 
-## 5. Scene
-1. New scene `GhostFret.unity`: Meta camera rig (from building blocks), passthrough, hand tracking, Interaction SDK rig.
-2. Add an empty `GhostFretApp` object with the `GhostFretApp` component and its child components (see the script headers).
-3. Build & Run to the Quest 3.
+## 5. Scene (everything else is built in code)
+1. Project Settings → Player → **Active Input Handling = Both** (Editor mouse hands use the legacy Input).
+2. Graphics → **Always Included Shaders**: make sure `Sprites/Default` is listed.
+3. Window → TextMeshPro → **Import TMP Essentials**. Add a symbol fallback font (e.g. Noto Sans Symbols 2, OFL) via Font Asset Creator → TMP Settings → Fallback Font Assets, so ✓ ○ × show.
+4. New scene `GhostFret.unity`: add **OVRCameraRig** (camera tagged MainCamera), enable **passthrough** (OVRManager + OVRPassthroughLayer, camera background clear/transparent).
+5. On both hand anchors: **OVRHand + OVRSkeleton**, Skeleton Type = **XR Hand Left / XR Hand Right**.
+6. OVRManager: Hand Tracking Support = **Hands Only**, Frequency = High, Version = Latest.
+7. Empty GameObject **GhostFret** at (0,0,0) with the **GhostFretApp** component. Leave every slot empty: it creates all modules itself.
+8. Press Play to test in the Editor: mouse = right index tip, click = pinch, **Left Shift** = move the left (fretting) hand, scroll = depth, keys **1–4** = curl left fingers, **P** = palm up.
+9. Build & Run to the Quest 3. After the first build, check the manifest has `RECORD_AUDIO`.
 
 ## 6. Competition build
 1. Release build (IL2CPP, ARM64).
