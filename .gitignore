@@ -20,3 +20,6 @@ core-tests/obj/
 # OS
 .DS_Store
 Thumbs.db
+
+# Meta Immersive Debugger local token (per machine)
+unity/Assets/Resources/DevAgentSettings.asset*
