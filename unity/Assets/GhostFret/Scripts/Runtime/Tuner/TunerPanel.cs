@@ -173,7 +173,7 @@ namespace GhostFret.Runtime.Tuner
                 _nextRead = Time.unscaledTime + readInterval;
                 Read(mic);
             }
-            if (!hearing) _status.text = mic != null && mic.IsAskingPermission ? "Waiting for the microphone…" : "The microphone is off";
+            if (!hearing) _status.text = mic != null && mic.IsAskingPermission ? "Waiting for the microphone..." : "The microphone is off";
 
             AnimateNeedle();
         }
@@ -209,8 +209,8 @@ namespace GhostFret.Runtime.Tuner
             TunerAdvice advice = _smoother.Advice;
             if (!_smoother.IsStable)
             {
-                _status.text = _smoother.DoneCount == 6 ? "All in tune " + Theme.GoodMark : "Pluck one string";
-                _note.text = "–";
+                _status.text = _smoother.DoneCount == 6 ? "All in tune!" : "Pluck one string";
+                _note.text = "-";
                 _note.color = Theme.TextDim;
                 _advice.text = TunerSmoother.AdviceText(TunerAdvice.Listening);
                 _advice.color = Theme.TextDim;
@@ -225,7 +225,7 @@ namespace GhostFret.Runtime.Tuner
                 _status.text = Capitalise(GuitarTuning.StringNames[s]) + " string";
                 _note.text = NoteMath.PitchClassNames[NoteMath.PitchClass(_tuning.OpenStringMidi[s])];
                 _note.color = good ? Theme.Good : Theme.Text;
-                _advice.text = good ? Theme.GoodMark + " " + TunerSmoother.AdviceText(advice) : TunerSmoother.AdviceText(advice);
+                _advice.text = good ? TunerSmoother.AdviceText(advice) : TunerSmoother.AdviceText(advice);
                 _advice.color = c;
                 SetColour(_needle, c);
                 SetColour(_hub, c);
@@ -290,7 +290,7 @@ namespace GhostFret.Runtime.Tuner
             _needle = Quad(_needlePivot, "Needle", new Vector2(0.003f, needleLen), new Vector3(0f, needleLen * 0.5f, 0f), 0f, Theme.TextDim);
             _hub = Quad(_needlePivot, "Hub", new Vector2(0.009f, 0.009f), new Vector3(0f, 0f, -0.0002f), 45f, Theme.TextDim);
 
-            _note = UIKit.CreateText(_root, "–", Theme.TitleHeight * 1.5f, new Vector3(0f, -0.022f, -0.0015f), 0.12f);
+            _note = UIKit.CreateText(_root, "-", Theme.TitleHeight * 1.5f, new Vector3(0f, -0.022f, -0.0015f), 0.12f);
             _advice = UIKit.CreateText(_root, TunerSmoother.AdviceText(TunerAdvice.Listening), Theme.BodyHeight, new Vector3(0f, -0.054f, -0.0015f), 0.27f);
             _advice.color = Theme.TextDim;
 
@@ -319,7 +319,7 @@ namespace GhostFret.Runtime.Tuner
             {
                 string name = NoteMath.PitchClassNames[NoteMath.PitchClass(_tuning.OpenStringMidi[s])];
                 bool done = _smoother.IsDone(s);
-                _chipText[s].text = done ? name + Theme.GoodMark : name;
+                _chipText[s].text = done ? name + " ok" : name;   // green chip + "ok": never colour alone
                 _chipText[s].color = done ? Theme.PanelBg : Theme.Text;
                 SetColour(_chipBg[s], done ? Theme.Good : Theme.ButtonBg);
             }

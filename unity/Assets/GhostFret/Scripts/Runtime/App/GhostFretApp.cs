@@ -127,6 +127,7 @@ namespace GhostFret.Runtime.App
         {
             _s.Hands = PickHandInput();
             HandsHub.Input = _s.Hands;
+            EnsureAudioListener();
 
             _s.Mic = microphone = Ensure(microphone, "Microphone");
             _s.Audio = coach = Ensure(coach, "Audio Coach");
@@ -333,6 +334,10 @@ namespace GhostFret.Runtime.App
                 ? DayPlanner.GuidedOptions(_s.Curriculum, _s.Day, _s.Fitted != null, PickTodaysSong() != null)
                 : new SessionOptions { FretboardFitted = _s.Fitted != null };
 
+            // Ask for the microphone now, right after the Welcome card said why we listen,
+            // instead of surprising the player with the system dialog mid-calibration.
+            if (mode != SessionMode.Air) StartMic();
+
             SessionState before = Flow.State;
             if (Flow.Begin(mode, options)) OnStateChanged(before, Flow.State);
         }
@@ -477,6 +482,7 @@ namespace GhostFret.Runtime.App
 
         private void RequestResume()
         {
+            _pausedBySystem = false;   // any resume (button, palm, system) clears the system-pause flag
             if (Flow.State == SessionState.Paused) Fire(SessionTrigger.Resume);
         }
 
@@ -561,15 +567,50 @@ namespace GhostFret.Runtime.App
             ProgressStore.Save(_s.Progress);
         }
 
+        // True when the headset (system menu, a permission dialog) paused us, not the player.
+        private bool _pausedBySystem;
+
         private void PauseForSystem()
         {
             if (!_ready) return;
-            RequestPause();
             Save();
+            // Android's microphone dialog takes focus: don't pause for that, or the player
+            // comes back from "Allow" to a pause card and the mic seems broken.
+            if (_s.Mic != null && _s.Mic.IsAskingPermission) return;
+            if (Flow.State == SessionState.Paused) return;
+            if (!SessionFlow.IsPausable(Flow.State)) return;
+            _pausedBySystem = true;
+            RequestPause();
         }
 
-        private void OnApplicationPause(bool paused) { if (paused) PauseForSystem(); }
-        private void OnApplicationFocus(bool focused) { if (!focused) PauseForSystem(); }
+        private void ResumeFromSystem()
+        {
+            // Coming back from the Meta menu: pick up exactly where we were, no extra tap needed.
+            if (!_pausedBySystem) return;
+            _pausedBySystem = false;
+            RequestResume();
+        }
+
+        private void OnApplicationPause(bool paused) { if (paused) PauseForSystem(); else ResumeFromSystem(); }
+        private void OnApplicationFocus(bool focused) { if (!focused) PauseForSystem(); else ResumeFromSystem(); }
+
+        /// <summary>
+        /// Without an AudioListener Unity plays nothing at all. Meta's camera rig doesn't always have one,
+        /// so put one on the player's eye camera if the scene has none.
+        /// </summary>
+        private static void EnsureAudioListener()
+        {
+            if (FindFirstObjectByType<AudioListener>() != null) return;
+            Camera cam = Camera.main;
+            if (cam == null)
+            {
+                foreach (Camera c in FindObjectsByType<Camera>(FindObjectsSortMode.None))
+                    if (c.enabled && c.stereoTargetEye != StereoTargetEyeMask.None) { cam = c; break; }
+            }
+            GameObject host = cam != null ? cam.gameObject : new GameObject("GhostFret Audio Listener");
+            host.AddComponent<AudioListener>();
+            Debug.Log("[GhostFret] Added an AudioListener to " + host.name + " (the scene had none).");
+        }
         private void OnApplicationQuit() { if (_s != null) Save(); }
 
         // ---------- Placement ----------
@@ -578,7 +619,11 @@ namespace GhostFret.Runtime.App
         private void PlaceCaptionAnchor(FretboardGeometry g)
         {
             if (g == null) { Coach.Anchor = null; return; }
-            UIKit.PlaceBesideGuitar(_captionAnchor, g, 0.12f, 0.27f);
+            // Same spot as the cards, then straight up past the tallest card (0.30 m), so a caption
+            // never sits on top of a card (seen overlapping on device).
+            UIKit.PlaceBesideGuitar(_captionAnchor, g);
+            _captionAnchor.position += Vector3.up * 0.19f;
+            UIKit.FacePlayer(_captionAnchor);
             Coach.Anchor = _captionAnchor;
         }
     }

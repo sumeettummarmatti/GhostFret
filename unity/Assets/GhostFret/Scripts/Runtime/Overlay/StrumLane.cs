@@ -300,7 +300,7 @@ namespace GhostFret.Runtime.Overlay
         private void Say(string text, bool good)
         {
             Build();
-            _judgement.text = (good ? Theme.GoodMark + " " : Theme.HintMark + " ") + text;
+            _judgement.text = (good ? "" : Theme.HintMark + " ") + text;
             _judgement.color = good ? Theme.Good : Theme.Hint;
             _judgementAt = Time.unscaledTime;
         }

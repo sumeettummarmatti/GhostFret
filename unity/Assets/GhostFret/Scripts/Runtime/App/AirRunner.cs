@@ -22,10 +22,9 @@ namespace GhostFret.Runtime.App
         {
             _s = s;
             _song = song;
-            _panel = AppPanel.Create("Air mode", new Vector2(0.30f, 0.11f));
-            _panel.AddText("Air mode practises shapes and rhythm. Real-guitar mode checks your actual sound.",
-                Theme.SmallHeight, 0.02f, Theme.TextDim);
-            _panel.AddButton("I'm done", 0f, -0.028f, AppPanel.SmallButton, Complete);
+            // Just the safety-net button. The Air guitar's own card already shows the honesty note.
+            _panel = AppPanel.Create("Air mode", new Vector2(0.14f, 0.065f));
+            _panel.AddButton("I'm done", 0f, 0f, AppPanel.SmallButton, Complete);
         }
 
         /// <param name="song">Song for a returning player (null → Air Day 1).</param>
@@ -37,7 +36,7 @@ namespace GhostFret.Runtime.App
             _s.Air.Begin(_s.Hands, _s.Progress.settings.leftHanded);
             _s.Geometry = _s.Air.Geometry;
             _panel.Show(_s.Geometry);
-            if (_s.Geometry != null) _panel.transform.position += Vector3.up * 0.12f;   // above the song panel
+            PlaceBesideAirCard();
 
             if (song == null || !_s.Progress.airDay1Done)
             {
@@ -54,6 +53,16 @@ namespace GhostFret.Runtime.App
                 _inSong = true;
                 _song.Begin(song, true, Complete);
             }
+        }
+
+        /// <summary>Put the "I'm done" card to the side of the Air guitar's card so they never overlap.</summary>
+        private void PlaceBesideAirCard()
+        {
+            Transform card = _s.Air.PanelTransform;
+            if (card == null) return;
+            bool left = _s.Progress.settings.leftHanded;
+            _panel.transform.position = card.position + card.right * (left ? -0.25f : 0.25f);
+            UIKit.FacePlayer(_panel.transform);
         }
 
         public void SetPaused(bool paused)

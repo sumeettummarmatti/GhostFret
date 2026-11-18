@@ -398,7 +398,7 @@ namespace GhostFret.Runtime.Calibration
             _body = UIKit.CreateText(_panel, "", Theme.BodyHeight, new Vector3(0, 0.004f, -0.001f), 0.33f);
             _sub = UIKit.CreateText(_panel, "", Theme.SmallHeight, new Vector3(0, -0.030f, -0.001f), 0.33f);
             _sub.color = Theme.TextDim;
-            _yes = UIKit.CreateButton(_panel, Theme.GoodMark + " Looks right", new Vector3(-0.085f, -0.060f, -0.002f), new Vector2(0.15f, 0.036f), OnLooksRight);
+            _yes = UIKit.CreateButton(_panel, "Looks right", new Vector3(-0.085f, -0.060f, -0.002f), new Vector2(0.15f, 0.036f), OnLooksRight);
             _again = UIKit.CreateButton(_panel, "Try again", new Vector3(0.085f, -0.060f, -0.002f), new Vector2(0.15f, 0.036f), OnTryAgain);
             SetButtons(false);
             _panel.gameObject.SetActive(false);

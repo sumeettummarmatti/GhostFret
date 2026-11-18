@@ -7,6 +7,42 @@ GhostFret is a mixed-reality guitar coach for **Meta Quest 3**. You see your rea
 - What works today: all code is written, **246 Core tests pass**, the project **compiles and plays in the Unity Editor** with a stand-in guitar preview. **Not yet tested on a real Quest 3**, and the scene still needs the Quest camera rig (Part F). Your job: get it running and test everything, step by step.
 - Browser mock-up of the look (optional, for reference only, not the real app): https://claude.ai/artifact/HuiXZLbtpKXef8gLas6rtn (only works if Sumeet has shared it with you).
 
+---
+
+## UPDATE 2026-11-19: fixes from the first headset test (do this first)
+
+**What was wrong, and what changed in `main`:**
+| Seen on the Quest | Cause | Fix |
+|---|---|---|
+| Text overlapping inside cards | Font sizes ~1.4x too big and text boxes let long lines spill into neighbours | Every text now sits in a fixed box and shrinks to fit (`UIKit.FitText`) |
+| Cards overlapping each other (Air mode had 3 copies of the same note) | Air card + "I'm done" card + caption all in one spot | One honesty note, "I'm done" card sits beside the Air card, captions sit above cards |
+| Cards covering the guitar body | "Beside the guitar" was placed over the strings | Cards float 20 cm above the body (`UIKit.CardRise`) and tilt toward your eyes |
+| See-through cards | 82% opacity in passthrough | 95% |
+| Solid blue/grey hand blob | Meta's hand mesh drawn opaque over your real hand | Hand meshes are hidden at runtime; tracking still works (`MetaHandInput.hideHandMeshes`) |
+| No sound | The Quest camera rig had no AudioListener (Unity plays nothing without one) | Added automatically at start; UI sounds louder |
+| Mic not working / "Paused" card after the mic dialog | The Android permission dialog paused the app and nothing resumed it | Permission dialog no longer pauses; the Meta menu pauses and auto-resumes; mic is requested when you press Start; waits 8 s for the first samples |
+| Empty boxes instead of ✓ | Built-in font has no ✓ / ○ / … | Plain characters only |
+
+**Tanisha: do these steps, in order**
+1. In your repo folder: `git pull origin main` (if you changed files, commit them first; your scene edits from Part F won't conflict, these fixes are scripts only).
+2. Switch to Unity and wait for it to recompile. Console: **no red errors**.
+3. Open your Quest scene (the one with the Camera Rig). Check the rig's **CenterEyeAnchor** camera is tagged **MainCamera**. No need to add an AudioListener; the app adds one if it's missing.
+4. **Reset the mic permission** (the old build may have been denied): in the headset, Settings → Apps (or Privacy & Safety → App permissions) → **GhostFret** → Microphone → **Allow**. Or simply uninstall GhostFret from the headset (Library → Unknown sources → ⋯ → Uninstall) so it asks again.
+5. **Build And Run** to the Quest (File → Build Profiles → Android → Build And Run).
+6. In the headset, test and note pass/fail:
+   - [ ] Welcome card text is clean (no overlapping lines), floating above the guitar, readable.
+   - [ ] You hear a soft click when you press a button.
+   - [ ] Press **Start** → Android asks for the microphone → **Allow** → the app does **not** show "Paused".
+   - [ ] Your real hands are visible (no blue/grey blob). Pressing buttons and the 3 fit touches still work.
+   - [ ] Tuner: pluck a string → the needle moves and the note name shows (this proves the mic works).
+   - [ ] Chord Coach: strum Em → green strings and "Clean Em!" (or a gentle tip). You hear the chime.
+   - [ ] Air mode: one Air card + a separate small "I'm done" card; strumming plays a guitar sound.
+   - [ ] Open the Meta menu (palm-toward-you pinch) then close it → the app picks up where it was.
+7. If something still fails, send: a headset screenshot/clip, the step, and the Unity log from the headset:
+   `adb logcat -s Unity` (run while reproducing; Android SDK platform-tools come with Unity: on Mac `/Applications/Unity/Hub/Editor/6000.3.28f1/PlaybackEngines/AndroidPlayer/SDK/platform-tools/adb`).
+
+---
+
 Work through the parts in order. Each step says what to do and how to know it worked (✅). Don't skip the ✅ checks.
 
 ---

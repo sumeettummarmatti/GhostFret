@@ -45,13 +45,37 @@ namespace GhostFret.Runtime.UI
             go.transform.localPosition = localPos;
             var tmp = go.AddComponent<TextMeshPro>();
             tmp.text = text;
-            // TMP 3D text: fontSize 10 ≈ 1 m line height at scale 1; cap height is ~0.7 of the line.
-            tmp.fontSize = heightMeters * 14f;
+            FitText(tmp, heightMeters, widthMeters, heightMeters * TextBoxLines);
             tmp.color = Theme.Text;
             tmp.alignment = align;
-            tmp.textWrappingMode = TextWrappingModes.Normal;
-            tmp.rectTransform.sizeDelta = new Vector2(widthMeters, heightMeters * 6f);
             return tmp;
+        }
+
+        /// <summary>
+        /// Text box height in multiples of the cap height. One line fits at full size; a long line wraps
+        /// to two and shrinks a little. Text can never spill into the line above or below (that was the
+        /// overlapping-text bug seen on the headset).
+        /// </summary>
+        public const float TextBoxLines = 2.4f;
+
+        /// <summary>How far cards float above the guitar body (m). 0.05 put them over the strings on device.</summary>
+        public static float CardRise = 0.20f;
+
+        /// <summary>
+        /// Sizes a TMP text to a fixed box: auto-size down to 50% so long strings fit, then truncate.
+        /// Measured on device: TMP world text cap height ≈ fontSize × 0.1 m.
+        /// </summary>
+        public static void FitText(TextMeshPro tmp, float capHeightMeters, float boxWidth, float boxHeight)
+        {
+            float max = capHeightMeters * 10f;
+            tmp.rectTransform.sizeDelta = new Vector2(boxWidth, boxHeight);
+            tmp.textWrappingMode = TextWrappingModes.Normal;
+            tmp.enableAutoSizing = true;
+            tmp.fontSizeMax = max;
+            tmp.fontSizeMin = max * 0.5f;
+            tmp.fontSize = max;
+            tmp.lineSpacing = -10f;   // a little tighter than TMP's default for two-line labels
+            tmp.overflowMode = TextOverflowModes.Truncate;   // the built-in font has no "…" glyph
         }
 
         public static PokeButton CreateButton(Transform parent, string label, Vector3 localPos, Vector2 size, Action onPress)
@@ -72,16 +96,20 @@ namespace GhostFret.Runtime.UI
             var button = go.AddComponent<PokeButton>();
             button.size = size;
             button.Background = r;
-            button.Label = CreateText(go.transform, label, Theme.BodyHeight, new Vector3(0, 0, -0.001f), size.x * 0.92f);
+            button.Label = CreateText(go.transform, label, Theme.BodyHeight, new Vector3(0, 0, -0.001f), size.x * 0.9f);
+            // The label must stay inside its button: box = button minus a small margin.
+            FitText(button.Label, Mathf.Min(Theme.BodyHeight, size.y * 0.42f), size.x * 0.9f, size.y * 0.86f);
             if (onPress != null) button.Pressed += onPress;
             return button;
         }
 
-        /// <summary>Turns a panel to face the player (yaw only, stays upright).</summary>
+        /// <summary>
+        /// Turns a panel to face the player's eyes: tilts up/down toward them (so cards below eye level
+        /// don't look slanted) but never rolls, so text stays level.
+        /// </summary>
         public static void FacePlayer(Transform t)
         {
             Vector3 away = t.position - HeadPosition;
-            away.y = 0f;
             if (away.sqrMagnitude < 1e-6f) away = Vector3.forward;
             t.rotation = Quaternion.LookRotation(away.normalized, Vector3.up);
         }
@@ -112,7 +140,8 @@ namespace GhostFret.Runtime.UI
             Vector3 lift = (g.SurfaceNormal * up).ToUnity();
             // Lift toward the player if the surface normal points away from them.
             if (Vector3.Dot(lift, HeadPosition - body) < 0f) lift = -lift;
-            t.position = body + lift + Vector3.up * 0.05f;
+            // Float clearly above the body (not over the strings, where the strumming hand works).
+            t.position = body + lift + Vector3.up * CardRise;
             FacePlayer(t);
         }
 

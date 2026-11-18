@@ -28,6 +28,13 @@ namespace GhostFret.Runtime.Hands
         public float findRetrySeconds = 1f;
         /// <summary>dot(palm normal, direction to head) above this = palm toward the headset → no app pinch.</summary>
         public float palmTowardHeadDot = 0.6f;
+        /// <summary>
+        /// Hide the SDK's hand meshes so the player sees their real hands in passthrough. On device the
+        /// default hand mesh drew as an opaque blob over the real hand and the ghost dots.
+        /// Tracking keeps working; only the renderers are switched off.
+        /// </summary>
+        public bool hideHandMeshes = true;
+        private float _nextHide;
 
         // Joint slots we care about, filled from OVRSkeleton bones by id.
         private const int Wrist_ = 0;
@@ -49,6 +56,32 @@ namespace GhostFret.Runtime.Hands
                 _nextFind = Time.unscaledTime + findRetrySeconds;
                 FindMissing();
             }
+            // The SDK creates hand mesh renderers lazily, so keep checking once a second.
+            if (hideHandMeshes && Time.unscaledTime >= _nextHide)
+            {
+                _nextHide = Time.unscaledTime + 1f;
+                HideHandVisuals();
+            }
+        }
+
+        private void HideHandVisuals()
+        {
+            HideRenderersUnder(leftHand);
+            HideRenderersUnder(rightHand);
+            HideRenderersUnder(leftSkeleton);
+            HideRenderersUnder(rightSkeleton);
+            // Hand meshes that live on other objects (building-block hand visuals).
+            foreach (OVRMeshRenderer m in FindObjectsByType<OVRMeshRenderer>(FindObjectsSortMode.None))
+                HideRenderersUnder(m);
+            foreach (OVRSkeletonRenderer s in FindObjectsByType<OVRSkeletonRenderer>(FindObjectsSortMode.None))
+                if (s.enabled) s.enabled = false;
+        }
+
+        private static void HideRenderersUnder(Component c)
+        {
+            if (c == null) return;
+            foreach (Renderer r in c.GetComponentsInChildren<Renderer>(true))
+                if (r.enabled) r.enabled = false;
         }
 
         // ---------- IHandInput ----------

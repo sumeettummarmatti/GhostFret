@@ -9,7 +9,7 @@ namespace GhostFret.Runtime.UI
     /// </summary>
     public static class UiSounds
     {
-        public static float Volume = 0.35f;
+        public static float Volume = 0.6f;   // Quest speakers are quiet; still softer than a strummed guitar
 
         private const int Rate = 48000;
         private static AudioClip _click, _chime, _hmm, _tick, _tickAccent;

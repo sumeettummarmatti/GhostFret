@@ -32,9 +32,11 @@ namespace GhostFret.Runtime.Audio
         [Tooltip("Length of Unity's looping record clip (seconds).")]
         public int clipSeconds = 2;
         [Tooltip("Show the 'why we listen' panel before the system permission dialog.")]
-        public bool explainBeforeAsking = true;
+        public bool explainBeforeAsking = false;   // the Welcome card already says why we listen; a second card stacked over others on device
         [Tooltip("Editor only: show the permission panel even though the Editor doesn't need it (to test the flow).")]
         public bool showExplainerInEditor = false;
+        [Tooltip("Seconds to wait for the first mic samples before giving up. Quest can take a few seconds right after the permission dialog.")]
+        public float firstSamplesTimeout = 8f;
         [Tooltip("Level meter smoothing: how fast it rises and falls (per second).")]
         public float levelRise = 30f, levelFall = 4f;
 
@@ -249,7 +251,7 @@ namespace GhostFret.Runtime.Audio
                     IsRunning = true;
                     if (Started != null) Started();
                 }
-                else if (Time.unscaledTime - _startRequestedAt > 3f)
+                else if (Time.unscaledTime - _startRequestedAt > firstSamplesTimeout)
                 {
                     StopCapture();
                     Unavailable();

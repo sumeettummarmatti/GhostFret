@@ -24,6 +24,9 @@ namespace GhostFret.Runtime.AirMode
     /// </summary>
     public sealed class AirGuitar : MonoBehaviour
     {
+        /// <summary>The Air guitar's own card (for placing other cards beside it).</summary>
+        public Transform PanelTransform { get { return _panel; } }
+
         public const string HonestyNote = "Air mode practises shapes and rhythm. Real-guitar mode checks your actual sound.";
 
         // Tuning values (listed in the report for PROGRESS.md).
@@ -142,7 +145,7 @@ namespace GhostFret.Runtime.AirMode
             {
                 _noteShown = true;
                 _noteShownAt = Time.unscaledTime;
-                Coach.Say(HonestyNote, CoachTone.Neutral, false);
+                // The note is on the panel; repeating it as a caption stacked three copies on device.
             }
             if (TargetShape != null) Precache(TargetShape);
         }
@@ -310,7 +313,7 @@ namespace GhostFret.Runtime.AirMode
             UIKit.FacePlayer(_panel);
             _panel.gameObject.SetActive(true);
             _panelShow = 0f;
-            _captionAnchor.position = _panel.position + Vector3.up * 0.095f;
+            _captionAnchor.position = _panel.position + Vector3.up * 0.125f;   // clear of the panel's top edge
 
             if (_overlay != null)
             {
@@ -486,7 +489,7 @@ namespace GhostFret.Runtime.AirMode
             _visual.Celebrate();
             UiSounds.PlayAt(UiSounds.Chime, _sound.position, 0.8f);
             Coach.Say("You did it: Em to D, four times!", CoachTone.Good, false);
-            SetStep(Theme.GoodMark + " Day 1 done");
+            SetStep("Day 1 done!");
             yield return WaitSeconds(3.5f);
 
             _day1 = null;

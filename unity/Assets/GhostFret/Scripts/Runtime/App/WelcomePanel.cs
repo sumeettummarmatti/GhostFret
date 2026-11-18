@@ -35,7 +35,7 @@ namespace GhostFret.Runtime.App
             _panel.AddText("Grab your guitar and sit comfortably.", Theme.BodyHeight, 0.05f);
             _panel.AddButton("Start", 0f, -0.01f, AppPanel.BigButton, () => Choose(SessionMode.Guided));
             _panel.AddButton("No guitar? Try Air mode", 0f, -0.075f, new Vector2(0.22f, 0.042f), () => Choose(SessionMode.Air));
-            _panel.AddText("Sound and hands are used live and never saved.", Theme.SmallHeight, -0.125f, Theme.TextDim);
+            _panel.AddText("GhostFret listens to your guitar to check chords. Sound and hands are used live, never saved or sent.", Theme.SmallHeight, -0.125f, Theme.TextDim);
             _panel.Show(g);
         }
 

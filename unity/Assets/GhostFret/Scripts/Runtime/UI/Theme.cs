@@ -13,16 +13,18 @@ namespace GhostFret.Runtime.UI
         public static readonly Color Hint = new Color(1f, 0.72f, 0.28f, 1f);         // warm amber + ! (never red)
         public static readonly Color FretLine = new Color(1f, 1f, 1f, 0.5f);         // frets slightly brighter
         public static readonly Color StringLine = new Color(1f, 1f, 1f, 0.4f);       // strings at 40%
-        public static readonly Color PanelBg = new Color(0.07f, 0.09f, 0.12f, 0.82f); // dark glass
+        public static readonly Color PanelBg = new Color(0.07f, 0.09f, 0.12f, 0.95f); // dark glass, nearly opaque so cards behind never show through in passthrough
         public static readonly Color ButtonBg = new Color(0.16f, 0.20f, 0.26f, 0.92f);
         public static readonly Color ButtonHover = new Color(0.22f, 0.32f, 0.40f, 0.95f);
         public static readonly Color Text = new Color(0.95f, 0.96f, 0.98f, 1f);
         public static readonly Color TextDim = new Color(0.70f, 0.75f, 0.80f, 1f);
 
-        public const string GoodMark = "✓";
+        // Plain characters only: the built-in TMP font (LiberationSans SDF) has no ✓ or ○ glyphs,
+        // which showed as empty boxes on the headset. Good messages carry their own words ("Clean Em!").
+        public const string GoodMark = "";
         public const string HintMark = "!";
         public const string SkipMark = "×";
-        public const string OpenMark = "○";
+        public const string OpenMark = "o";
 
         // Text heights in metres (readable at ~0.5 m).
         public const float TitleHeight = 0.028f;

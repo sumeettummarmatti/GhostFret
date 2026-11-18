@@ -84,7 +84,11 @@ Golden rule: a phase is ✅ only when it works on Quest 3 with controllers off. 
 | Ghost dot size | 11 mm, breathe 2.4 s | GhostHand |
 | Overlay lift | 3 mm | FretboardOverlay |
 | Poke press depth | 4 mm (hover 4 cm, cooldown 0.6 s) | PokeButton |
-| UI sound volume | 0.35 | UiSounds.Volume |
+| UI sound volume | 0.6 | UiSounds.Volume (raised for Quest speakers) |
+| Card rise above guitar body | 0.20 m | UIKit.CardRise |
+| Text box | 2.4 × cap height, auto-size 50–100%, font = cap × 10 | UIKit.FitText |
+| Panel opacity | 0.95 | Theme.PanelBg |
+| Mic first-samples timeout | 8 s | MicrophoneInput.firstSamplesTimeout |
 | Song ghost-hand lead | 1 beat (morph ≤0.35 s) | SongPlayer.morphLeadBeats |
 | Metronome schedule-ahead | 0.25 s | Metronome |
 | Strum lane look-ahead | 3 beats | StrumLane |
@@ -114,7 +118,8 @@ Golden rule: a phase is ✅ only when it works on Quest 3 with controllers off. 
 - Panel layout/spacing untested in a headset.
 - Editor preview stand-in guitar is right-handed only; B (buzz) maps to a muted-string result (Core has no buzz kind).
 - Browser mock-up of the look: https://claude.ai/artifact/HuiXZLbtpKXef8gLas6rtn (not the Unity build).
-- Editor preview layout: Welcome panel text too large / overlapping, panel faces yaw-only so it looks slanted when looking down; overlay lines faint on wood.
+- Overlay fret lines still faint on light wood (needs a device look).
+- Tuner panel bottom row (chips / Skip) is tight.
 - Unity's own search indexer logs one ArgumentOutOfRange on startup (UnityEditor.Search), not our code.
 - Scene has Main Camera only; OVRCameraRig + passthrough still to add for the Quest build.
 - Backing tracks not created yet (SongPlayer falls back to metronome).
@@ -125,6 +130,7 @@ Golden rule: a phase is ✅ only when it works on Quest 3 with controllers off. 
 | 1 | Skeleton created | Phase 0 |
 | 2 | Read all docs; core tests run (20/20 pass, test runner fixed for .NET 9); action plan written; Many Hands idea dropped, GhostFret is the entry | Phase 0 Unity setup (user) + parallel Runtime work (agents) |
 | 3 | Shared UI kit + asmdef refs (TMP, Oculus.VR); 5 parallel agents wrote all Runtime modules + Core logic; 246/246 tests; cross-module API check clean; hard-rule audit clean; TMP wrap API updated | User: Unity setup + first compile; send console errors |
+| 7 | First Quest test (Tanisha) → fixed: text overflow (FitText boxes, font factor 10), overlapping cards (Air dupes, CardRise 0.20, captions above), panel opacity 0.95, hidden opaque hand meshes, AudioListener auto-add + louder UI sounds, mic permission no longer pauses, system pause auto-resumes, mic asked at Start, 8 s first-sample timeout, plain glyphs; Android compile verified | Tanisha: pull, Build And Run, retest checklist in docs/TESTER_SETUP.md |
 | 6 | Pushed to GitHub (removed Meta DevAgentSettings token from history + .gitignore); docs/TESTER_SETUP.md for a second tester | Tester: Parts B–G of TESTER_SETUP.md |
 | 5 | Unity 6.3 + Android installed, licence, project settings (URP asset, Meta core 209, Pipeline, modules, input Both), TMP essentials, GhostFret scene; Play works with stand-in guitar | Fix panel layout; add OVRCameraRig + passthrough; first Quest build |
 | 4 | Browser preview artifact; Editor-only preview helper (auto-fit stand-in guitar + keyboard feedback); Unity Hub installed | User: Unity CLI install + sign-in, open project, Play |

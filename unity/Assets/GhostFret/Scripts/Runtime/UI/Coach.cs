@@ -48,7 +48,8 @@ namespace GhostFret.Runtime.UI
 
         private void Show(string message, CoachTone tone, bool withSound)
         {
-            string mark = tone == CoachTone.Good ? Theme.GoodMark + " " : tone == CoachTone.Hint ? Theme.HintMark + " " : "";
+            string m = tone == CoachTone.Good ? Theme.GoodMark : tone == CoachTone.Hint ? Theme.HintMark : "";
+            string mark = m.Length > 0 ? m + " " : "";
             _text.text = mark + message;
             _text.color = tone == CoachTone.Good ? Theme.Good : tone == CoachTone.Hint ? Theme.Hint : Theme.Text;
             _shownAt = Time.unscaledTime;
