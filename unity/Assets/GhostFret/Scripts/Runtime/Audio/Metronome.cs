@@ -60,12 +60,8 @@ namespace GhostFret.Runtime.Audio
 
         private void Awake() { EnsureSources(); }
 
-        /// <summary>
-        /// Start ticking on a grid from the next beat. Ticks continue until Stop().
-        /// Same as Begin(); kept for the shared contract. (Unity may print a one-time note that
-        /// "Start() can not take parameters" because of the name; Begin() avoids that.)
-        /// </summary>
-        public void Start(BeatGrid grid, int beatsPerBar) { Begin(grid, beatsPerBar); }
+        // No Start(grid, bars) alias: Unity treats any method named Start as its lifecycle message
+        // and logs "Start() can not take parameters". Use Begin(grid, beatsPerBar).
 
         /// <summary>Start ticking on a grid from the next beat. Ticks continue until Stop().</summary>
         public void Begin(BeatGrid grid, int beatsPerBar)
